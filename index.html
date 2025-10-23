@@ -21,48 +21,46 @@
         body {
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             color: white;
-            min-height: 100vh;
-            padding: 10px;
-            overflow-x: hidden;
+            height: 100vh;
+            overflow: hidden;
             touch-action: manipulation;
-        }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background-color: rgba(0, 0, 0, 0.4);
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             position: relative;
         }
         
+        .container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 5px 0;
+        }
+        
+        .game-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
         .record {
-            position: absolute;
-            top: 15px;
-            right: 15px;
             background-color: rgba(255, 255, 255, 0.2);
             padding: 8px 12px;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: 1rem;
             text-align: center;
         }
         
         .record-title {
             font-weight: bold;
-            margin-bottom: 3px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 15px;
-            padding-right: 120px;
-        }
-        
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 2px;
         }
         
         .game-info {
@@ -71,8 +69,8 @@
             background-color: rgba(255, 255, 255, 0.1);
             padding: 12px;
             border-radius: 10px;
-            margin-bottom: 15px;
-            font-size: 0.9rem;
+            margin-bottom: 10px;
+            font-size: 1rem;
         }
         
         .info-item {
@@ -85,46 +83,59 @@
             font-weight: bold;
         }
         
+        .progress-bar {
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
         .game-area {
-            position: relative;
-            height: 35vh;
-            min-height: 200px;
+            flex: 1;
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            margin-bottom: 15px;
-            overflow: hidden;
+            margin-bottom: 10px;
             border: 2px dashed rgba(255, 255, 255, 0.3);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 15px;
+            position: relative;
         }
         
         .formula-container {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             flex-wrap: wrap;
         }
         
         .formula {
             background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
             color: #333;
-            padding: 12px 20px;
+            padding: 12px 18px;
             border-radius: 8px;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: bold;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
-            margin-right: 15px;
+            margin-right: 10px;
         }
         
         .result-feedback {
             font-size: 1.8rem;
             font-weight: bold;
-            min-width: 40px;
+            min-width: 30px;
             text-align: center;
         }
         
@@ -133,43 +144,46 @@
             color: #ffcc00;
             margin-top: 10px;
             text-align: center;
-            min-height: 25px;
+            min-height: 20px;
         }
         
         .bags-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
         
         .bag {
             background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            padding: 15px 10px;
+            border-radius: 8px;
+            padding: 14px 10px;
             text-align: center;
             font-size: 1.2rem;
             font-weight: bold;
             transition: all 0.3s;
-            min-height: 80px;
+            min-height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
             border: 2px solid transparent;
             touch-action: manipulation;
             cursor: pointer;
+            position: relative;
         }
         
-        .bag:hover, .bag:active {
+        .bag:active {
             background-color: rgba(255, 255, 255, 0.4);
-            transform: scale(1.05);
+            transform: scale(0.98);
         }
         
         .score-change {
             position: absolute;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: bold;
             animation: floatUp 1s forwards;
             z-index: 30;
+            pointer-events: none;
         }
         
         @keyframes floatUp {
@@ -179,8 +193,69 @@
             }
             100% {
                 opacity: 0;
-                transform: translateY(-50px);
+                transform: translateY(-40px);
             }
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #333;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+            touch-action: manipulation;
+        }
+        
+        .action-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .instructions {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            overflow-y: auto;
+            max-height: 120px;
+        }
+        
+        .instructions h3 {
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .instructions ul {
+            padding-left: 15px;
+        }
+        
+        .instructions li {
+            margin-bottom: 3px;
+        }
+        
+        .timer {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
         }
         
         .game-over, .success-message, .level-up, .record-form, .rank-popup, .share-popup {
@@ -195,138 +270,79 @@
             align-items: center;
             justify-content: center;
             z-index: 100;
-            padding: 20px;
+            padding: 15px;
         }
         
         .message-box {
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            padding: 25px;
+            padding: 20px;
             border-radius: 15px;
             text-align: center;
-            max-width: 500px;
             width: 100%;
+            max-width: 300px;
         }
         
         .message-box h2 {
-            font-size: 2rem;
-            margin-bottom: 15px;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
         }
         
         .message-box p {
-            font-size: 1.1rem;
-            margin-bottom: 15px;
+            font-size: 1rem;
+            margin-bottom: 10px;
         }
         
         input {
             width: 100%;
-            padding: 12px;
-            margin: 10px 0;
+            padding: 10px;
+            margin: 8px 0;
             border-radius: 8px;
             border: none;
-            font-size: 1.1rem;
+            font-size: 1rem;
             text-align: center;
         }
         
-        button {
+        .popup-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .popup-btn {
             background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
             border: none;
-            padding: 12px 25px;
-            font-size: 1.1rem;
-            border-radius: 50px;
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 8px;
             cursor: pointer;
             color: #333;
             font-weight: bold;
             transition: transform 0.3s, box-shadow 0.3s;
-            margin-top: 10px;
-            width: 100%;
-            max-width: 200px;
             touch-action: manipulation;
         }
         
-        button:hover, button:active {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .instructions {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 12px;
-            border-radius: 10px;
-            margin-top: 15px;
-            font-size: 0.9rem;
-        }
-        
-        .instructions h3 {
-            margin-bottom: 8px;
-            font-size: 1.1rem;
-        }
-        
-        .instructions ul {
-            padding-left: 20px;
-        }
-        
-        .instructions li {
-            margin-bottom: 5px;
-        }
-        
-        .timer {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #ffcc00;
-        }
-        
-        .progress-bar {
-            height: 8px;
-            background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
-            margin-top: 8px;
-            overflow: hidden;
-        }
-        
-        .progress {
-            height: 100%;
-            background: linear-gradient(90deg, #4CAF50, #8BC34A);
-            width: 0%;
-            transition: width 0.3s;
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .action-btn {
-            flex: 1;
-            padding: 10px;
-            font-size: 1rem;
-        }
-        
-        .copyright {
-            text-align: center;
-            margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
+        .popup-btn:active {
+            transform: scale(0.98);
         }
         
         .rank-list {
-            max-height: 300px;
+            max-height: 200px;
             overflow-y: auto;
-            margin: 15px 0;
+            margin: 10px 0;
             background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            padding: 10px;
+            border-radius: 8px;
+            padding: 8px;
         }
         
         .rank-item {
             display: flex;
             justify-content: space-between;
-            padding: 8px 12px;
-            margin-bottom: 8px;
+            padding: 6px 10px;
+            margin-bottom: 6px;
             background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            border-radius: 6px;
+            font-size: 0.9rem;
         }
         
         .rank-item.top {
@@ -334,7 +350,7 @@
         }
         
         .rank-number {
-            width: 30px;
+            width: 25px;
             text-align: center;
             font-weight: bold;
         }
@@ -342,24 +358,24 @@
         .share-options {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 15px;
         }
         
         .share-btn {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             cursor: pointer;
             transition: transform 0.3s;
         }
         
-        .share-btn:hover {
-            transform: scale(1.1);
+        .share-btn:active {
+            transform: scale(0.95);
         }
         
         .wechat {
@@ -378,82 +394,79 @@
             background-color: #ffcc00;
         }
         
-        /* 移动设备特定优化 */
-        @media (max-width: 768px) {
+        @media (max-width: 360px) {
             .bags-container {
                 grid-template-columns: repeat(2, 1fr);
             }
             
             .game-area {
-                height: 30vh;
-            }
-            
-            h1 {
-                font-size: 1.5rem;
+                padding: 10px;
             }
             
             .formula {
                 font-size: 1.2rem;
-                padding: 10px 15px;
+                padding: 10px 14px;
             }
             
             .bag {
                 font-size: 1rem;
                 padding: 12px 8px;
-                min-height: 70px;
-            }
-            
-            header {
-                padding-right: 0;
-            }
-            
-            .record {
-                position: static;
-                margin-bottom: 10px;
+                min-height: 65px;
             }
             
             .action-buttons {
                 flex-direction: column;
             }
+            
+            .instructions {
+                max-height: 100px;
+            }
         }
         
-        @media (max-width: 480px) {
-            .bags-container {
-                grid-template-columns: 1fr;
-                gap: 8px;
+        @media (max-height: 500px) and (orientation: landscape) {
+            .container {
+                max-width: 100%;
+                padding: 5px;
             }
             
-            .game-area {
-                height: 25vh;
-                min-height: 150px;
-            }
-            
-            .formula {
-                font-size: 1rem;
-                padding: 8px 12px;
-                margin-right: 10px;
-            }
-            
-            .result-feedback {
-                font-size: 1.5rem;
-            }
-            
-            .bag {
-                font-size: 0.9rem;
-                padding: 10px 5px;
-                min-height: 60px;
+            .header {
+                margin-bottom: 5px;
             }
             
             .game-info {
-                font-size: 0.8rem;
+                margin-bottom: 5px;
+                padding: 5px;
             }
             
-            .info-value {
-                font-size: 1.3rem;
+            .progress-bar {
+                margin-bottom: 5px;
+            }
+            
+            .game-area {
+                margin-bottom: 5px;
+                padding: 10px;
+            }
+            
+            .bags-container {
+                margin-bottom: 5px;
+            }
+            
+            .action-buttons {
+                margin-bottom: 5px;
+            }
+            
+            .instructions {
+                max-height: 80px;
+                padding: 5px;
+                font-size: 0.7rem;
+            }
+            
+            .copyright {
+                margin-top: 5px;
+                padding-top: 5px;
             }
         }
         
-        /* 防止长按菜单 */
         .formula, .bag, button {
             -webkit-touch-callout: none;
             -webkit-user-select: none;
@@ -462,20 +475,22 @@
             -ms-user-select: none;
             user-select: none;
         }
+        
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="record">
-            <div class="record-title">最快纪录</div>
-            <div id="recordTime">时间: /</div>
-            <div id="recordName">挑战者: /</div>
+        <div class="header">
+            <div class="game-title">诱导公式大擂台</div>
+            <div class="record">
+                <div class="record-title">最快纪录</div>
+                <div id="recordTime">时间: /</div>
+                <div id="recordName">挑战者: /</div>
+            </div>
         </div>
-        
-        <header>
-            <h1>诱导公式大擂台</h1>
-            <p>点击选择正确的答案</p>
-        </header>
         
         <div class="game-info">
             <div class="info-item">
@@ -505,17 +520,18 @@
         </div>
         
         <div class="bags-container" id="bagsContainer">
-            <div class="bag" data-answer="sin">sinα</div>
-            <div class="bag" data-answer="-sin">-sinα</div>
-            <div class="bag" data-answer="cos">cosα</div>
-            <div class="bag" data-answer="-cos">-cosα</div>
-            <div class="bag" data-answer="tan">tanα</div>
-            <div class="bag" data-answer="-tan">-tanα</div>
+            <div class="bag" onclick="selectAnswer('sin')">sinα</div>
+            <div class="bag" onclick="selectAnswer('-sin')">-sinα</div>
+            <div class="bag" onclick="selectAnswer('cos')">cosα</div>
+            <div class="bag" onclick="selectAnswer('-cos')">-cosα</div>
+            <div class="bag" onclick="selectAnswer('tan')">tanα</div>
+            <div class="bag" onclick="selectAnswer('-tan')">-tanα</div>
         </div>
         
         <div class="action-buttons">
-            <button class="action-btn" id="rankButton">排行榜</button>
-            <button class="action-btn" id="shareButton">分享游戏</button>
+            <button class="action-btn" onclick="resetToPrimary()">重置游戏</button>
+            <button class="action-btn" onclick="showRankPopup()">排行榜</button>
+            <button class="action-btn" onclick="showSharePopup()">分享游戏</button>
         </div>
         
         <div class="instructions">
@@ -524,10 +540,12 @@
                 <li>点击选择上方公式对应的正确答案</li>
                 <li>正确答案 +1 分，错误答案 -1 分</li>
                 <li>分数低于 0 分游戏结束</li>
-                <li>每个等级需要在2分钟内达到15分才能升级</li>
-                <li>初级速度较慢，中级和高级速度逐渐加快</li>
+                <li>每个等级需要在规定时间内达到15分才能升级</li>
+                <li>初级和中级的挑战时间为2分钟，高级为1分30秒</li>
                 <li>高级达到 15 分即可获胜！</li>
                 <li>打破最快纪录可以留下您的名字！</li>
+                <li>中级失败后回到中级，高级失败后回到高级</li>
+                <li>点击"重置游戏"可回到初级</li>
             </ul>
         </div>
         
@@ -537,92 +555,100 @@
         </div>
     </div>
     
-    <div class="game-over" id="gameOver" style="display: none;">
+    <!-- 弹窗区域 -->
+    <div class="game-over hidden" id="gameOverPopup">
         <div class="message-box">
             <h2>游戏结束</h2>
             <p id="gameOverMessage">您的分数低于 0 分，请再接再厉！</p>
-            <button id="restartButton">重新开始</button>
+            <div class="popup-buttons">
+                <button class="popup-btn" onclick="restartGame()">重新开始</button>
+            </div>
         </div>
     </div>
     
-    <div class="level-up" id="levelUp" style="display: none;">
+    <div class="level-up hidden" id="levelUpPopup">
         <div class="message-box">
             <h2 id="levelUpTitle">升级成功！</h2>
             <p id="levelUpMessage">恭喜您成功升级到中级！</p>
-            <button id="nextLevelButton">继续挑战</button>
+            <div class="popup-buttons">
+                <button class="popup-btn" onclick="nextLevel()">继续挑战</button>
+            </div>
         </div>
     </div>
     
-    <div class="record-form" id="recordForm" style="display: none;">
+    <div class="record-form hidden" id="recordForm">
         <div class="message-box">
             <h2>恭喜打破纪录！</h2>
             <p id="recordMessage">您以 <span id="recordTimeValue"></span> 的成绩打破了最快纪录！</p>
             <input type="text" id="playerName" placeholder="请输入您的名字" maxlength="10">
-            <button id="saveRecordButton">保存纪录</button>
+            <div class="popup-buttons">
+                <button class="popup-btn" onclick="saveRecord()">保存纪录</button>
+            </div>
         </div>
     </div>
     
-    <div class="success-message" id="successMessage" style="display: none;">
+    <div class="success-message hidden" id="successPopup">
         <div class="message-box">
             <h2>恭喜！</h2>
             <p>您已成为诱导公式达人！</p>
-            <button id="playAgainButton">再玩一次</button>
-            <button id="addToRankButton">上榜炫耀</button>
+            <div class="popup-buttons">
+                <button class="popup-btn" onclick="restartGame()">再玩一次</button>
+                <button class="popup-btn" onclick="addToRankList()">上榜炫耀</button>
+            </div>
         </div>
     </div>
     
-    <div class="rank-popup" id="rankPopup" style="display: none;">
+    <div class="rank-popup hidden" id="rankPopup">
         <div class="message-box">
             <h2>排行榜</h2>
             <p>诱导公式大擂台 - 最强王者</p>
             <div class="rank-list" id="rankList">
                 <!-- 排行榜内容将通过JavaScript动态生成 -->
             </div>
-            <button id="closeRankButton">关闭</button>
+            <div class="popup-buttons">
+                <button class="popup-btn" onclick="closePopup('rankPopup')">关闭</button>
+            </div>
         </div>
     </div>
     
-    <div class="share-popup" id="sharePopup" style="display: none;">
+    <div class="share-popup hidden" id="sharePopup">
         <div class="message-box">
             <h2>分享游戏</h2>
             <p>分享给好友一起挑战吧！</p>
             <div class="share-options">
-                <div class="share-btn wechat" title="分享到微信">微</div>
-                <div class="share-btn qq" title="分享到QQ">Q</div>
-                <div class="share-btn weibo" title="分享到微博">微</div>
-                <div class="share-btn link" title="复制链接" id="copyLinkButton">链</div>
+                <div class="share-btn wechat" title="分享到微信" onclick="shareToWechat()">微</div>
+                <div class="share-btn qq" title="分享到QQ" onclick="shareToQQ()">Q</div>
+                <div class="share-btn weibo" title="分享到微博" onclick="shareToWeibo()">微</div>
+                <div class="share-btn link" title="复制链接" onclick="copyGameLink()">链</div>
             </div>
-            <button id="closeShareButton">关闭</button>
+            <div class="popup-buttons">
+                <button class="popup-btn" onclick="closePopup('sharePopup')">关闭</button>
+            </div>
         </div>
     </div>
 
     <script>
         // 游戏状态
-        const gameState = {
+        var gameState = {
             score: 0,
-            level: 1, // 1:初级, 2:中级, 3:高级
-            timeLeft: 120, // 2分钟，单位秒
-            startTime: 0, // 当前等级开始时间
+            level: 1,
+            timeLeft: 120,
             timerInterval: null,
             isGameActive: true,
             currentFormula: null,
-            lastFormula: null, // 上一个公式，用于避免重复
-            fallSpeed: 1, // 初始下落速度
-            formulaInterval: null,
             isWaitingForAnswer: false,
-            // 最快纪录
+            lastFormula: null, // 记录上一个公式，避免重复
+            // 每个级别有独立的记录
             records: {
                 level1: { time: null, name: null },
                 level2: { time: null, name: null },
                 level3: { time: null, name: null }
             },
-            // 排行榜数据
             rankList: []
         };
 
-        // 诱导公式库 - 确保每个等级至少有20个不同的式子，且不包含无答案的tan公式
-        const formulaLibrary = {
-            // 初级公式 - 包含简单六组诱导公式和π/2公式
+        // 诱导公式库
+        var formulaLibrary = {
             level1: [
                 { formula: "sin(π+α)", answer: "-sin" },
                 { formula: "cos(π+α)", answer: "-cos" },
@@ -643,12 +669,8 @@
                 { formula: "sin(3π/2+α)", answer: "-cos" },
                 { formula: "cos(3π/2+α)", answer: "sin" },
                 { formula: "sin(3π/2-α)", answer: "-cos" },
-                { formula: "cos(3π/2-α)", answer: "-sin" },
-                { formula: "sin(2π+α)", answer: "sin" },
-                { formula: "cos(2π+α)", answer: "cos" },
-                { formula: "tan(2π+α)", answer: "tan" }
+                { formula: "cos(3π/2-α)", answer: "-sin" }
             ],
-            // 中级公式 - 包含初级公式和更复杂的公式
             level2: [
                 { formula: "sin(5π/2+α)", answer: "cos" },
                 { formula: "cos(5π/2+α)", answer: "-sin" },
@@ -662,95 +684,89 @@
                 { formula: "cos(9π/2+α)", answer: "-sin" },
                 { formula: "sin(9π/2-α)", answer: "cos" },
                 { formula: "cos(9π/2-α)", answer: "sin" },
-                { formula: "sin(11π/2+α)", answer: "-cos" },
-                { formula: "cos(11π/2+α)", answer: "sin" },
-                { formula: "sin(11π/2-α)", answer: "-cos" },
-                { formula: "cos(11π/2-α)", answer: "-sin" },
-                { formula: "sin(13π/2+α)", answer: "cos" },
-                { formula: "cos(13π/2+α)", answer: "-sin" },
-                { formula: "sin(13π/2-α)", answer: "cos" },
-                { formula: "cos(13π/2-α)", answer: "sin" },
-                { formula: "sin(15π/2+α)", answer: "-cos" },
-                { formula: "cos(15π/2+α)", answer: "sin" },
-                { formula: "sin(15π/2-α)", answer: "-cos" },
-                { formula: "cos(15π/2-α)", answer: "-sin" }
+                // 新增中级题库公式
+                { formula: "sin(-π/2+α)", answer: "-cos" },
+                { formula: "cos(-π/2+α)", answer: "sin" },
+                { formula: "sin(-π/2-α)", answer: "-cos" },
+                { formula: "cos(-π/2-α)", answer: "-sin" },
+                { formula: "sin(-3π/2+α)", answer: "cos" },
+                { formula: "cos(-3π/2+α)", answer: "-sin" },
+                { formula: "sin(-3π/2-α)", answer: "cos" },
+                { formula: "cos(-3π/2-α)", answer: "sin" },
+                { formula: "sin(-π+α)", answer: "-sin" },
+                { formula: "cos(-π+α)", answer: "-cos" },
+                { formula: "tan(-π+α)", answer: "tan" },
+                { formula: "sin(-π-α)", answer: "sin" },
+                { formula: "cos(-π-α)", answer: "-cos" },
+                { formula: "tan(-π-α)", answer: "-tan" },
+                { formula: "sin(-2π+α)", answer: "sin" },
+                { formula: "cos(-2π+α)", answer: "cos" },
+                { formula: "tan(-2π+α)", answer: "tan" },
+                { formula: "sin(-2π-α)", answer: "-sin" },
+                { formula: "cos(-2π-α)", answer: "cos" },
+                { formula: "tan(-2π-α)", answer: "-tan" }
             ],
-            // 高级公式 - 包含所有公式和更复杂的公式
             level3: [
-                { formula: "sin(17π/2+α)", answer: "cos" },
-                { formula: "cos(17π/2+α)", answer: "-sin" },
-                { formula: "sin(17π/2-α)", answer: "cos" },
-                { formula: "cos(17π/2-α)", answer: "sin" },
-                { formula: "sin(19π/2+α)", answer: "-cos" },
-                { formula: "cos(19π/2+α)", answer: "sin" },
-                { formula: "sin(19π/2-α)", answer: "-cos" },
-                { formula: "cos(19π/2-α)", answer: "-sin" },
-                { formula: "sin(21π/2+α)", answer: "cos" },
-                { formula: "cos(21π/2+α)", answer: "-sin" },
-                { formula: "sin(21π/2-α)", answer: "cos" },
-                { formula: "cos(21π/2-α)", answer: "sin" },
-                { formula: "sin(23π/2+α)", answer: "-cos" },
-                { formula: "cos(23π/2+α)", answer: "sin" },
-                { formula: "sin(23π/2-α)", answer: "-cos" },
-                { formula: "cos(23π/2-α)", answer: "-sin" },
-                { formula: "sin(25π/2+α)", answer: "cos" },
-                { formula: "cos(25π/2+α)", answer: "-sin" },
-                { formula: "sin(25π/2-α)", answer: "cos" },
-                { formula: "cos(25π/2-α)", answer: "sin" },
-                { formula: "sin(27π/2+α)", answer: "-cos" },
-                { formula: "cos(27π/2+α)", answer: "sin" },
-                { formula: "sin(27π/2-α)", answer: "-cos" },
-                { formula: "cos(27π/2-α)", answer: "-sin" }
+                // 高级题库与中级题库相同，但时间更短
+                { formula: "sin(5π/2+α)", answer: "cos" },
+                { formula: "cos(5π/2+α)", answer: "-sin" },
+                { formula: "sin(5π/2-α)", answer: "cos" },
+                { formula: "cos(5π/2-α)", answer: "sin" },
+                { formula: "sin(7π/2+α)", answer: "-cos" },
+                { formula: "cos(7π/2+α)", answer: "sin" },
+                { formula: "sin(7π/2-α)", answer: "-cos" },
+                { formula: "cos(7π/2-α)", answer: "-sin" },
+                { formula: "sin(9π/2+α)", answer: "cos" },
+                { formula: "cos(9π/2+α)", answer: "-sin" },
+                { formula: "sin(9π/2-α)", answer: "cos" },
+                { formula: "cos(9π/2-α)", answer: "sin" },
+                // 新增中级题库公式
+                { formula: "sin(-π/2+α)", answer: "-cos" },
+                { formula: "cos(-π/2+α)", answer: "sin" },
+                { formula: "sin(-π/2-α)", answer: "-cos" },
+                { formula: "cos(-π/2-α)", answer: "-sin" },
+                { formula: "sin(-3π/2+α)", answer: "cos" },
+                { formula: "cos(-3π/2+α)", answer: "-sin" },
+                { formula: "sin(-3π/2-α)", answer: "cos" },
+                { formula: "cos(-3π/2-α)", answer: "sin" },
+                { formula: "sin(-π+α)", answer: "-sin" },
+                { formula: "cos(-π+α)", answer: "-cos" },
+                { formula: "tan(-π+α)", answer: "tan" },
+                { formula: "sin(-π-α)", answer: "sin" },
+                { formula: "cos(-π-α)", answer: "-cos" },
+                { formula: "tan(-π-α)", answer: "-tan" },
+                { formula: "sin(-2π+α)", answer: "sin" },
+                { formula: "cos(-2π+α)", answer: "cos" },
+                { formula: "tan(-2π+α)", answer: "tan" },
+                { formula: "sin(-2π-α)", answer: "-sin" },
+                { formula: "cos(-2π-α)", answer: "cos" },
+                { formula: "tan(-2π-α)", answer: "-tan" }
             ]
         };
 
-        // DOM 元素
-        const gameArea = document.getElementById('gameArea');
-        const currentFormulaElement = document.getElementById('currentFormula');
-        const resultFeedbackElement = document.getElementById('resultFeedback');
-        const correctAnswerElement = document.getElementById('correctAnswer');
-        const bagsContainer = document.getElementById('bagsContainer');
-        const scoreElement = document.getElementById('score');
-        const levelElement = document.getElementById('level');
-        const timerElement = document.getElementById('timer');
-        const progressElement = document.getElementById('progress');
-        const gameOverScreen = document.getElementById('gameOver');
-        const gameOverMessage = document.getElementById('gameOverMessage');
-        const levelUpScreen = document.getElementById('levelUp');
-        const levelUpTitle = document.getElementById('levelUpTitle');
-        const levelUpMessage = document.getElementById('levelUpMessage');
-        const recordForm = document.getElementById('recordForm');
-        const recordMessage = document.getElementById('recordMessage');
-        const recordTimeValue = document.getElementById('recordTimeValue');
-        const playerNameInput = document.getElementById('playerName');
-        const successMessage = document.getElementById('successMessage');
-        const restartButton = document.getElementById('restartButton');
-        const nextLevelButton = document.getElementById('nextLevelButton');
-        const saveRecordButton = document.getElementById('saveRecordButton');
-        const playAgainButton = document.getElementById('playAgainButton');
-        const addToRankButton = document.getElementById('addToRankButton');
-        const rankButton = document.getElementById('rankButton');
-        const shareButton = document.getElementById('shareButton');
-        const rankPopup = document.getElementById('rankPopup');
-        const sharePopup = document.getElementById('sharePopup');
-        const rankListElement = document.getElementById('rankList');
-        const closeRankButton = document.getElementById('closeRankButton');
-        const closeShareButton = document.getElementById('closeShareButton');
-        const copyLinkButton = document.getElementById('copyLinkButton');
-        const recordTimeElement = document.getElementById('recordTime');
-        const recordNameElement = document.getElementById('recordName');
-
         // 初始化游戏
         function initGame() {
+            // 从localStorage读取当前等级，如果没有则默认为1（初级）
+            var savedLevel = localStorage.getItem('inductionFormulaLevel');
+            if (savedLevel) {
+                gameState.level = parseInt(savedLevel);
+            } else {
+                gameState.level = 1;
+            }
+            
             gameState.score = 0;
-            gameState.level = 1;
-            gameState.timeLeft = 120;
-            gameState.startTime = Date.now();
+            
+            // 根据等级设置时间
+            if (gameState.level === 3) {
+                gameState.timeLeft = 90; // 高级为90秒
+            } else {
+                gameState.timeLeft = 120; // 初级和中级为120秒
+            }
+            
             gameState.isGameActive = true;
             gameState.currentFormula = null;
-            gameState.lastFormula = null;
-            gameState.fallSpeed = 1;
             gameState.isWaitingForAnswer = false;
+            gameState.lastFormula = null; // 重置上一个公式
             
             // 清除之前的计时器
             if (gameState.timerInterval) {
@@ -765,69 +781,107 @@
             startTimer();
             generateNextFormula();
             
-            gameOverScreen.style.display = 'none';
-            levelUpScreen.style.display = 'none';
-            recordForm.style.display = 'none';
-            successMessage.style.display = 'none';
-            rankPopup.style.display = 'none';
-            sharePopup.style.display = 'none';
+            // 隐藏所有弹窗
+            var popups = document.querySelectorAll('.game-over, .success-message, .level-up, .record-form, .rank-popup, .share-popup');
+            for (var i = 0; i < popups.length; i++) {
+                popups[i].classList.add('hidden');
+            }
             
             // 重置反馈
-            resultFeedbackElement.textContent = '';
-            correctAnswerElement.textContent = '';
+            document.getElementById('resultFeedback').textContent = '';
+            document.getElementById('correctAnswer').textContent = '';
         }
 
         // 加载记录
         function loadRecords() {
-            const savedRecords = localStorage.getItem('inductionGameRecords');
-            if (savedRecords) {
-                gameState.records = JSON.parse(savedRecords);
+            try {
+                var savedRecords = localStorage.getItem('inductionGameRecords');
+                if (savedRecords) {
+                    gameState.records = JSON.parse(savedRecords);
+                } else {
+                    // 如果没有记录，初始化默认记录
+                    gameState.records = {
+                        level1: { time: null, name: null },
+                        level2: { time: null, name: null },
+                        level3: { time: null, name: null }
+                    };
+                }
+            } catch (e) {
+                console.error('加载记录失败:', e);
+                // 如果加载失败，初始化默认记录
+                gameState.records = {
+                    level1: { time: null, name: null },
+                    level2: { time: null, name: null },
+                    level3: { time: null, name: null }
+                };
             }
             updateRecordDisplay();
         }
 
         // 保存记录
         function saveRecords() {
-            localStorage.setItem('inductionGameRecords', JSON.stringify(gameState.records));
+            try {
+                localStorage.setItem('inductionGameRecords', JSON.stringify(gameState.records));
+                console.log('记录保存成功');
+            } catch (e) {
+                console.error('保存记录失败:', e);
+                alert('保存记录失败，请检查浏览器设置');
+            }
             updateRecordDisplay();
         }
 
         // 加载排行榜
         function loadRankList() {
-            const savedRankList = localStorage.getItem('inductionGameRankList');
-            if (savedRankList) {
-                gameState.rankList = JSON.parse(savedRankList);
-            } else {
+            try {
+                var savedRankList = localStorage.getItem('inductionGameRankList');
+                if (savedRankList) {
+                    gameState.rankList = JSON.parse(savedRankList);
+                } else {
+                    gameState.rankList = [];
+                }
+            } catch (e) {
+                console.error('加载排行榜失败:', e);
                 gameState.rankList = [];
             }
         }
 
         // 保存排行榜
         function saveRankList() {
-            localStorage.setItem('inductionGameRankList', JSON.stringify(gameState.rankList));
-        }
-
-        // 更新记录显示
-        function updateRecordDisplay() {
-            const currentLevelRecord = gameState.records[`level${gameState.level}`];
-            if (currentLevelRecord && currentLevelRecord.time) {
-                const minutes = Math.floor(currentLevelRecord.time / 60);
-                const seconds = currentLevelRecord.time % 60;
-                recordTimeElement.textContent = `时间: ${minutes}:${seconds.toString().padStart(2, '0')}`;
-                recordNameElement.textContent = `挑战者: ${currentLevelRecord.name}`;
-            } else {
-                recordTimeElement.textContent = '时间: /';
-                recordNameElement.textContent = '挑战者: /';
+            try {
+                localStorage.setItem('inductionGameRankList', JSON.stringify(gameState.rankList));
+                console.log('排行榜保存成功');
+            } catch (e) {
+                console.error('保存排行榜失败:', e);
+                alert('保存排行榜失败，请检查浏览器设置');
             }
         }
 
-        // 检查是否打破纪录
+        // 更新记录显示 - 根据当前级别显示对应的记录
+        function updateRecordDisplay() {
+            var currentLevelRecord = gameState.records['level' + gameState.level];
+            if (currentLevelRecord && currentLevelRecord.time) {
+                var minutes = Math.floor(currentLevelRecord.time / 60);
+                var seconds = currentLevelRecord.time % 60;
+                document.getElementById('recordTime').textContent = '时间: ' + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+                document.getElementById('recordName').textContent = '挑战者: ' + currentLevelRecord.name;
+            } else {
+                document.getElementById('recordTime').textContent = '时间: /';
+                document.getElementById('recordName').textContent = '挑战者: /';
+            }
+        }
+
+        // 检查是否打破纪录 - 只检查当前级别的记录
         function checkRecord() {
-            const currentLevel = `level${gameState.level}`;
-            const currentRecord = gameState.records[currentLevel];
-            const timeUsed = 120 - gameState.timeLeft; // 使用的秒数
+            var currentLevel = 'level' + gameState.level;
+            var currentRecord = gameState.records[currentLevel];
+            var timeUsed;
             
-            // 如果没有记录或者当前时间更短，则打破纪录
+            if (gameState.level === 3) {
+                timeUsed = 90 - gameState.timeLeft; // 高级总时间为90秒
+            } else {
+                timeUsed = 120 - gameState.timeLeft; // 初级和中级总时间为120秒
+            }
+            
             if (!currentRecord.time || timeUsed < currentRecord.time) {
                 return timeUsed;
             }
@@ -836,30 +890,26 @@
 
         // 更新UI
         function updateUI() {
-            scoreElement.textContent = gameState.score;
+            document.getElementById('score').textContent = gameState.score;
             
-            let levelText = "";
+            var levelText = "";
             switch(gameState.level) {
                 case 1: levelText = "初级"; break;
                 case 2: levelText = "中级"; break;
                 case 3: levelText = "高级"; break;
             }
-            levelElement.textContent = levelText;
+            document.getElementById('level').textContent = levelText;
             
-            // 更新进度条
-            const progress = (gameState.score / 15) * 100;
-            progressElement.style.width = `${Math.min(progress, 100)}%`;
+            var progress = (gameState.score / 15) * 100;
+            document.getElementById('progress').style.width = Math.min(progress, 100) + '%';
             
-            // 更新计时器显示
             updateTimerDisplay();
-            
-            // 更新记录显示
             updateRecordDisplay();
         }
 
         // 开始计时器
         function startTimer() {
-            gameState.timerInterval = setInterval(() => {
+            gameState.timerInterval = setInterval(function() {
                 if (!gameState.isGameActive) {
                     return;
                 }
@@ -867,7 +917,6 @@
                 gameState.timeLeft--;
                 updateTimerDisplay();
                 
-                // 检查时间是否用完
                 if (gameState.timeLeft <= 0) {
                     endGame(false, "时间到了！");
                 }
@@ -876,107 +925,89 @@
 
         // 更新计时器显示
         function updateTimerDisplay() {
-            const minutes = Math.floor(gameState.timeLeft / 60);
-            const seconds = gameState.timeLeft % 60;
-            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            var minutes = Math.floor(gameState.timeLeft / 60);
+            var seconds = gameState.timeLeft % 60;
+            document.getElementById('timer').textContent = 
+                (minutes < 10 ? '0' : '') + minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
             
-            // 时间不足30秒时改变颜色
             if (gameState.timeLeft <= 30) {
-                timerElement.style.color = '#ff5252';
+                document.getElementById('timer').style.color = '#ff5252';
             } else {
-                timerElement.style.color = '#ffcc00';
+                document.getElementById('timer').style.color = '#ffcc00';
             }
         }
 
-        // 生成下一个公式
+        // 生成下一个公式 - 避免与上一个公式相同
         function generateNextFormula() {
             if (gameState.isWaitingForAnswer) return;
             
-            // 根据等级选择公式库
-            let formulaPool = [];
+            var formulaPool = [];
             if (gameState.level === 1) {
                 formulaPool = formulaLibrary.level1;
-                gameState.fallSpeed = 1; // 初级速度减半
             } else if (gameState.level === 2) {
-                formulaPool = [...formulaLibrary.level1, ...formulaLibrary.level2];
-                gameState.fallSpeed = 1.2; // 中级速度提高五分之一
+                formulaPool = formulaLibrary.level2;
             } else {
-                formulaPool = [...formulaLibrary.level1, ...formulaLibrary.level2, ...formulaLibrary.level3];
-                gameState.fallSpeed = 1.44; // 高级速度再提高五分之一
+                formulaPool = formulaLibrary.level3;
             }
             
-            // 过滤掉与上一个相同的公式
-            let availableFormulas = formulaPool;
-            if (gameState.lastFormula) {
-                availableFormulas = formulaPool.filter(f => f.formula !== gameState.lastFormula.formula);
-            }
+            // 避免连续出现相同的公式
+            var selectedFormula;
+            var attempts = 0;
+            var maxAttempts = 10; // 最多尝试10次，避免无限循环
             
-            // 随机选择一个公式
-            const randomIndex = Math.floor(Math.random() * availableFormulas.length);
-            const selectedFormula = availableFormulas[randomIndex];
+            do {
+                var randomIndex = Math.floor(Math.random() * formulaPool.length);
+                selectedFormula = formulaPool[randomIndex];
+                attempts++;
+            } while (selectedFormula.formula === gameState.lastFormula && attempts < maxAttempts);
             
-            // 更新公式显示
-            currentFormulaElement.textContent = `${selectedFormula.formula} = ?`;
+            document.getElementById('currentFormula').textContent = selectedFormula.formula + ' = ?';
             
-            // 更新状态
             gameState.currentFormula = selectedFormula;
-            gameState.lastFormula = selectedFormula;
+            gameState.lastFormula = selectedFormula.formula; // 记录当前公式
             gameState.isWaitingForAnswer = true;
             
-            // 重置反馈
-            resultFeedbackElement.textContent = '';
-            correctAnswerElement.textContent = '';
+            document.getElementById('resultFeedback').textContent = '';
+            document.getElementById('correctAnswer').textContent = '';
         }
 
-        // 设置答案袋点击事件
-        function setupBagEvents() {
-            const bags = document.querySelectorAll('.bag');
+        // 选择答案
+        function selectAnswer(bagAnswer) {
+            if (!gameState.isWaitingForAnswer || !gameState.isGameActive) return;
             
-            bags.forEach(bag => {
-                bag.addEventListener('click', () => {
-                    if (!gameState.isWaitingForAnswer || !gameState.isGameActive) return;
-                    
-                    const bagAnswer = bag.dataset.answer;
-                    const formulaAnswer = gameState.currentFormula.answer;
-                    
-                    // 检查答案是否正确
-                    if (bagAnswer === formulaAnswer) {
-                        // 正确答案
-                        resultFeedbackElement.textContent = '✔';
-                        resultFeedbackElement.style.color = '#4CAF50';
-                        updateScore(1);
-                        showScoreChange('+1', bag, true);
-                    } else {
-                        // 错误答案
-                        resultFeedbackElement.textContent = '✖';
-                        resultFeedbackElement.style.color = '#F44336';
-                        
-                        // 显示正确答案
-                        let correctAnswerText = '';
-                        switch(formulaAnswer) {
-                            case 'sin': correctAnswerText = 'sinα'; break;
-                            case '-sin': correctAnswerText = '-sinα'; break;
-                            case 'cos': correctAnswerText = 'cosα'; break;
-                            case '-cos': correctAnswerText = '-cosα'; break;
-                            case 'tan': correctAnswerText = 'tanα'; break;
-                            case '-tan': correctAnswerText = '-tanα'; break;
-                        }
-                        correctAnswerElement.textContent = `正确答案为: ${correctAnswerText}`;
-                        
-                        updateScore(-1);
-                        showScoreChange('-1', bag, false);
-                    }
-                    
-                    gameState.isWaitingForAnswer = false;
-                    
-                    // 延迟后生成下一个公式
-                    setTimeout(() => {
-                        if (gameState.isGameActive) {
-                            generateNextFormula();
-                        }
-                    }, 1500);
-                });
-            });
+            var formulaAnswer = gameState.currentFormula.answer;
+            
+            if (bagAnswer === formulaAnswer) {
+                document.getElementById('resultFeedback').textContent = '✔';
+                document.getElementById('resultFeedback').style.color = '#4CAF50';
+                updateScore(1);
+                showScoreChange('+1', event.target, true);
+            } else {
+                document.getElementById('resultFeedback').textContent = '✖';
+                document.getElementById('resultFeedback').style.color = '#F44336';
+                
+                var correctAnswerText = '';
+                switch(formulaAnswer) {
+                    case 'sin': correctAnswerText = 'sinα'; break;
+                    case '-sin': correctAnswerText = '-sinα'; break;
+                    case 'cos': correctAnswerText = 'cosα'; break;
+                    case '-cos': correctAnswerText = '-cosα'; break;
+                    case 'tan': correctAnswerText = 'tanα'; break;
+                    case '-tan': correctAnswerText = '-tanα'; break;
+                }
+                document.getElementById('correctAnswer').textContent = '正确答案为: ' + correctAnswerText;
+                
+                updateScore(-1);
+                showScoreChange('-1', event.target, false);
+            }
+            
+            gameState.isWaitingForAnswer = false;
+            
+            setTimeout(function() {
+                if (gameState.isGameActive) {
+                    generateNextFormula();
+                }
+            }, 1500);
         }
 
         // 更新分数
@@ -984,27 +1015,21 @@
             gameState.score += change;
             updateUI();
             
-            // 检查游戏结束
             if (gameState.score < 0) {
                 endGame(false, "您的分数低于 0 分，请再接再厉！");
                 return;
             }
             
-            // 检查等级提升
             if (gameState.score >= 15) {
                 if (gameState.level < 3) {
-                    // 检查是否打破纪录
-                    const recordTime = checkRecord();
+                    var recordTime = checkRecord();
                     if (recordTime !== null) {
-                        // 打破纪录，显示记录表单
                         showRecordForm(recordTime);
                     } else {
-                        // 没有打破纪录，直接升级
                         showLevelUp();
                     }
                 } else {
-                    // 游戏胜利
-                    const recordTime = checkRecord();
+                    var recordTime = checkRecord();
                     if (recordTime !== null) {
                         showRecordForm(recordTime, true);
                     } else {
@@ -1015,33 +1040,39 @@
         }
 
         // 显示记录表单
-        function showRecordForm(recordTime, isFinalLevel = false) {
+        function showRecordForm(recordTime, isFinalLevel) {
             gameState.isGameActive = false;
             
-            const minutes = Math.floor(recordTime / 60);
-            const seconds = recordTime % 60;
-            recordTimeValue.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            var minutes = Math.floor(recordTime / 60);
+            var seconds = recordTime % 60;
+            document.getElementById('recordTimeValue').textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
             
             if (isFinalLevel) {
-                recordMessage.textContent = `恭喜您以 ${minutes}:${seconds.toString().padStart(2, '0')} 的成绩通关并打破纪录！`;
+                document.getElementById('recordMessage').textContent = '恭喜您以 ' + minutes + ':' + (seconds < 10 ? '0' : '') + seconds + ' 的成绩通关并打破纪录！';
             } else {
-                recordMessage.textContent = `您以 ${minutes}:${seconds.toString().padStart(2, '0')} 的成绩打破了最快纪录！`;
+                document.getElementById('recordMessage').textContent = '您以 ' + minutes + ':' + (seconds < 10 ? '0' : '') + seconds + ' 的成绩打破了最快纪录！';
             }
             
-            playerNameInput.value = '';
-            recordForm.style.display = 'flex';
+            document.getElementById('playerName').value = '';
+            document.getElementById('recordForm').classList.remove('hidden');
         }
 
-        // 保存记录
+        // 保存记录 - 只保存当前级别的记录
         function saveRecord() {
-            const playerName = playerNameInput.value.trim();
+            var playerName = document.getElementById('playerName').value.trim();
             if (!playerName) {
                 alert('请输入您的名字！');
                 return;
             }
             
-            const currentLevel = `level${gameState.level}`;
-            const recordTime = 120 - gameState.timeLeft;
+            var currentLevel = 'level' + gameState.level;
+            var recordTime;
+            
+            if (gameState.level === 3) {
+                recordTime = 90 - gameState.timeLeft; // 高级总时间为90秒
+            } else {
+                recordTime = 120 - gameState.timeLeft; // 初级和中级总时间为120秒
+            }
             
             gameState.records[currentLevel] = {
                 time: recordTime,
@@ -1049,7 +1080,7 @@
             };
             
             saveRecords();
-            recordForm.style.display = 'none';
+            document.getElementById('recordForm').classList.add('hidden');
             
             if (gameState.level < 3) {
                 showLevelUp();
@@ -1062,31 +1093,39 @@
         function showLevelUp() {
             gameState.isGameActive = false;
             
-            const nextLevel = gameState.level + 1;
-            let levelText = "";
+            var nextLevel = gameState.level + 1;
+            var levelText = "";
             switch(nextLevel) {
                 case 2: levelText = "中级"; break;
                 case 3: levelText = "高级"; break;
             }
             
-            levelUpTitle.textContent = `升级成功！`;
-            levelUpMessage.textContent = `恭喜您成功升级到${levelText}！`;
-            levelUpScreen.style.display = 'flex';
+            document.getElementById('levelUpTitle').textContent = '升级成功！';
+            document.getElementById('levelUpMessage').textContent = '恭喜您成功升级到' + levelText + '！';
+            document.getElementById('levelUpPopup').classList.remove('hidden');
         }
 
         // 进入下一等级
         function nextLevel() {
             gameState.level++;
+            // 保存当前等级到localStorage
+            localStorage.setItem('inductionFormulaLevel', gameState.level.toString());
+            
             gameState.score = 0;
-            gameState.timeLeft = 120;
-            gameState.startTime = Date.now();
+            
+            // 根据等级设置时间
+            if (gameState.level === 3) {
+                gameState.timeLeft = 90; // 高级为90秒
+            } else {
+                gameState.timeLeft = 120; // 初级和中级为120秒
+            }
+            
             gameState.isGameActive = true;
             gameState.currentFormula = null;
-            gameState.lastFormula = null;
             
             updateUI();
             generateNextFormula();
-            levelUpScreen.style.display = 'none';
+            document.getElementById('levelUpPopup').classList.add('hidden');
         }
 
         // 结束游戏
@@ -1098,61 +1137,59 @@
             }
             
             if (isSuccess) {
-                successMessage.style.display = 'flex';
+                document.getElementById('successPopup').classList.remove('hidden');
             } else {
-                gameOverMessage.textContent = message;
-                gameOverScreen.style.display = 'flex';
+                // 失败时不重置等级，保持当前等级
+                document.getElementById('gameOverMessage').textContent = message;
+                document.getElementById('gameOverPopup').classList.remove('hidden');
             }
         }
 
         // 显示分数变化
         function showScoreChange(text, element, isPositive) {
-            const scoreChange = document.createElement('div');
+            var scoreChange = document.createElement('div');
             scoreChange.className = 'score-change';
             scoreChange.textContent = text;
             scoreChange.style.color = isPositive ? '#4CAF50' : '#F44336';
             
-            const rect = element.getBoundingClientRect();
-            const gameAreaRect = gameArea.getBoundingClientRect();
+            var rect = element.getBoundingClientRect();
             
-            scoreChange.style.left = `${rect.left + rect.width/2 - 20 - gameAreaRect.left}px`;
-            scoreChange.style.top = `${rect.top - gameAreaRect.top}px`;
+            scoreChange.style.left = (rect.left + rect.width/2 - 20) + 'px';
+            scoreChange.style.top = (rect.top - 20) + 'px';
             
-            gameArea.appendChild(scoreChange);
+            document.body.appendChild(scoreChange);
             
-            // 移除元素
-            setTimeout(() => {
+            setTimeout(function() {
                 scoreChange.remove();
             }, 1000);
         }
 
         // 显示排行榜
         function showRankPopup() {
-            // 生成排行榜内容
+            var rankListElement = document.getElementById('rankList');
             rankListElement.innerHTML = '';
             
             if (gameState.rankList.length === 0) {
                 rankListElement.innerHTML = '<p style="text-align: center; padding: 20px;">暂无排行榜数据</p>';
             } else {
-                // 按分数排序
-                const sortedRankList = [...gameState.rankList].sort((a, b) => {
+                var sortedRankList = gameState.rankList.slice().sort(function(a, b) {
                     if (b.score !== a.score) {
                         return b.score - a.score;
                     }
                     return a.timeUsed - b.timeUsed;
                 });
                 
-                sortedRankList.forEach((player, index) => {
-                    const rankItem = document.createElement('div');
-                    rankItem.className = `rank-item ${index < 3 ? 'top' : ''}`;
+                sortedRankList.forEach(function(player, index) {
+                    var rankItem = document.createElement('div');
+                    rankItem.className = 'rank-item' + (index < 3 ? ' top' : '');
                     
-                    const rankNumber = document.createElement('div');
+                    var rankNumber = document.createElement('div');
                     rankNumber.className = 'rank-number';
                     rankNumber.textContent = index + 1;
                     
-                    const playerInfo = document.createElement('div');
+                    var playerInfo = document.createElement('div');
                     playerInfo.className = 'player-info';
-                    playerInfo.textContent = `${player.name} - ${player.score}分 - ${formatTime(player.timeUsed)}`;
+                    playerInfo.textContent = player.name + ' - ' + player.score + '分 - ' + formatTime(player.timeUsed);
                     
                     rankItem.appendChild(rankNumber);
                     rankItem.appendChild(playerInfo);
@@ -1160,16 +1197,23 @@
                 });
             }
             
-            rankPopup.style.display = 'flex';
+            document.getElementById('rankPopup').classList.remove('hidden');
         }
 
         // 添加到排行榜
         function addToRankList() {
-            const timeUsed = 120 - gameState.timeLeft;
-            const playerName = prompt('请输入您的名字（最多10个字符）：', '匿名玩家');
+            var timeUsed;
+            
+            if (gameState.level === 3) {
+                timeUsed = 90 - gameState.timeLeft; // 高级总时间为90秒
+            } else {
+                timeUsed = 120 - gameState.timeLeft; // 初级和中级总时间为120秒
+            }
+            
+            var playerName = prompt('请输入您的名字（最多10个字符）：', '匿名玩家');
             
             if (playerName !== null) {
-                const playerInfo = {
+                var playerInfo = {
                     name: playerName.substring(0, 10),
                     score: gameState.score,
                     timeUsed: timeUsed,
@@ -1181,54 +1225,103 @@
                 saveRankList();
                 
                 alert('已成功添加到排行榜！');
-                successMessage.style.display = 'none';
+                document.getElementById('successPopup').classList.add('hidden');
                 
-                // 显示排行榜
                 showRankPopup();
             }
         }
 
         // 格式化时间
         function formatTime(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${minutes}:${secs.toString().padStart(2, '0')}`;
+            var minutes = Math.floor(seconds / 60);
+            var secs = seconds % 60;
+            return minutes + ':' + (secs < 10 ? '0' : '') + secs;
+        }
+
+        // 显示分享弹窗
+        function showSharePopup() {
+            document.getElementById('sharePopup').classList.remove('hidden');
+        }
+
+        // 重置游戏到初级
+        function resetToPrimary() {
+            // 设置等级为初级
+            gameState.level = 1;
+            // 保存当前等级到localStorage
+            localStorage.setItem('inductionFormulaLevel', gameState.level.toString());
+            
+            // 重置游戏
+            restartGame();
+        }
+
+        // 关闭弹窗
+        function closePopup(popupId) {
+            document.getElementById(popupId).classList.add('hidden');
+        }
+
+        // 分享到微信
+        function shareToWechat() {
+            alert('微信分享功能');
+        }
+
+        // 分享到QQ
+        function shareToQQ() {
+            alert('QQ分享功能');
+        }
+
+        // 分享到微博
+        function shareToWeibo() {
+            alert('微博分享功能');
         }
 
         // 复制链接
         function copyGameLink() {
-            const gameUrl = window.location.href;
-            navigator.clipboard.writeText(gameUrl)
-                .then(() => {
-                    alert('游戏链接已复制到剪贴板！');
-                })
-                .catch(err => {
-                    console.error('复制失败: ', err);
-                    alert('复制失败，请手动复制链接：' + gameUrl);
-                });
+            var gameUrl = window.location.href;
+            var tempTextArea = document.createElement('textarea');
+            tempTextArea.value = gameUrl;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+            alert('游戏链接已复制到剪贴板！');
         }
 
-        // 事件监听
-        restartButton.addEventListener('click', initGame);
-        nextLevelButton.addEventListener('click', nextLevel);
-        saveRecordButton.addEventListener('click', saveRecord);
-        playAgainButton.addEventListener('click', initGame);
-        addToRankButton.addEventListener('click', addToRankList);
-        rankButton.addEventListener('click', showRankPopup);
-        shareButton.addEventListener('click', () => {
-            sharePopup.style.display = 'flex';
-        });
-        closeRankButton.addEventListener('click', () => {
-            rankPopup.style.display = 'none';
-        });
-        closeShareButton.addEventListener('click', () => {
-            sharePopup.style.display = 'none';
-        });
-        copyLinkButton.addEventListener('click', copyGameLink);
+        // 重新开始游戏
+        function restartGame() {
+            document.getElementById('gameOverPopup').classList.add('hidden');
+            document.getElementById('successPopup').classList.add('hidden');
+            
+            // 重置分数和时间，但不重置等级
+            gameState.score = 0;
+            
+            // 根据等级设置时间
+            if (gameState.level === 3) {
+                gameState.timeLeft = 90; // 高级为90秒
+            } else {
+                gameState.timeLeft = 120; // 初级和中级为120秒
+            }
+            
+            gameState.isGameActive = true;
+            gameState.currentFormula = null;
+            gameState.isWaitingForAnswer = false;
+            gameState.lastFormula = null; // 重置上一个公式
+            
+            // 清除之前的计时器
+            if (gameState.timerInterval) {
+                clearInterval(gameState.timerInterval);
+            }
+            
+            updateUI();
+            startTimer();
+            generateNextFormula();
+            
+            // 重置反馈
+            document.getElementById('resultFeedback').textContent = '';
+            document.getElementById('correctAnswer').textContent = '';
+        }
 
         // 初始化游戏
-        initGame();
-        setupBagEvents();
+        window.onload = initGame;
     </script>
 </body>
 </html>
