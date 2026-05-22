@@ -259,7 +259,7 @@
         }
         
         /* 弹窗样式 */
-        .game-over, .success-message, .level-up, .record-form, .rank-popup, .share-popup {
+        .game-over, .success-message, .level-up, .record-form, .rank-popup, .share-popup, .tip-popup {
             position: fixed;
             top: 0;
             left: 0;
@@ -291,6 +291,38 @@
         .message-box p {
             font-size: 1rem;
             margin-bottom: 10px;
+        }
+        
+        .tip-content {
+            text-align: left;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .tip-content h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: #ffcc00;
+        }
+        
+        .tip-content ul {
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .tip-content li {
+            margin-bottom: 5px;
+        }
+        
+        .encouragement {
+            font-style: italic;
+            color: #ffcc00;
+            margin-top: 10px;
+            font-weight: bold;
         }
         
         input {
@@ -560,17 +592,17 @@
     <div class="game-over hidden" id="gameOverPopup">
         <div class="message-box">
             <h2>游戏结束</h2>
-            <p>挑战失败，重头再来，再接再厉！</p>
+            <p id="gameOverMessage">很遗憾，您挑战失败，再接再厉哦！</p>
             <div class="popup-buttons">
-                <button class="popup-btn" onclick="restartGame()">重新开始</button>
+                <button class="popup-btn" onclick="restartSameLevel()">重新挑战</button>
             </div>
         </div>
     </div>
     
     <div class="level-up hidden" id="levelUpPopup">
         <div class="message-box">
-            <h2>恭喜你！</h2>
-            <p id="levelUpMessage">成功晋级！</p>
+            <h2 id="levelUpTitle">升级成功！</h2>
+            <p id="levelUpMessage">恭喜您成功升级到中级！</p>
             <div class="popup-buttons">
                 <button class="popup-btn" onclick="nextLevel()">继续挑战</button>
             </div>
@@ -627,6 +659,19 @@
             </div>
         </div>
     </div>
+    
+    <div class="tip-popup hidden" id="tipPopup">
+        <div class="message-box">
+            <h2>温馨提示</h2>
+            <div class="tip-content" id="tipContent">
+                <!-- 温馨提示内容将通过JavaScript动态生成 -->
+            </div>
+            <div class="encouragement">这些请同学加强学习哦！</div>
+            <div class="popup-buttons">
+                <button class="popup-btn" onclick="continueAfterTip()">继续</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // 游戏状态
@@ -649,23 +694,16 @@
             },
             rankList: [],
             // 记录当前题目的开始时间
-            currentStartTime: null
+            currentStartTime: null,
+            // 记录游戏结束原因
+            gameEndReason: null,
+            // 记录是否挑战成功
+            challengeSuccess: false
         };
 
         // 诱导公式库
         var formulaLibrary = {
             level1: [
-                { formula: "sin(π+α)", answer: "-sin" },
-                { formula: "cos(π+α)", answer: "-cos" },
-                { formula: "tan(π+α)", answer: "tan" },
-                { formula: "sin(π-α)", answer: "sin" },
-                { formula: "cos(π-α)", answer: "-cos" },
-                { formula: "tan(π-α)", answer: "-tan" },
-                { formula: "sin(-α)", answer: "-sin" },
-                { formula: "cos(-α)", answer: "cos" },
-                { formula: "tan(-α)", answer: "-tan" }
-            ],
-            level2: [
                 { formula: "sin(π+α)", answer: "-sin" },
                 { formula: "cos(π+α)", answer: "-cos" },
                 { formula: "tan(π+α)", answer: "tan" },
@@ -686,6 +724,40 @@
                 { formula: "cos(3π/2+α)", answer: "sin" },
                 { formula: "sin(3π/2-α)", answer: "-cos" },
                 { formula: "cos(3π/2-α)", answer: "-sin" }
+            ],
+            level2: [
+                { formula: "sin(5π/2+α)", answer: "cos" },
+                { formula: "cos(5π/2+α)", answer: "-sin" },
+                { formula: "sin(5π/2-α)", answer: "cos" },
+                { formula: "cos(5π/2-α)", answer: "sin" },
+                { formula: "sin(7π/2+α)", answer: "-cos" },
+                { formula: "cos(7π/2+α)", answer: "sin" },
+                { formula: "sin(7π/2-α)", answer: "-cos" },
+                { formula: "cos(7π/2-α)", answer: "-sin" },
+                { formula: "sin(9π/2+α)", answer: "cos" },
+                { formula: "cos(9π/2+α)", answer: "-sin" },
+                { formula: "sin(9π/2-α)", answer: "cos" },
+                { formula: "cos(9π/2-α)", answer: "sin" },
+                { formula: "sin(-π/2+α)", answer: "-cos" },
+                { formula: "cos(-π/2+α)", answer: "sin" },
+                { formula: "sin(-π/2-α)", answer: "-cos" },
+                { formula: "cos(-π/2-α)", answer: "-sin" },
+                { formula: "sin(-3π/2+α)", answer: "cos" },
+                { formula: "cos(-3π/2+α)", answer: "-sin" },
+                { formula: "sin(-3π/2-α)", answer: "cos" },
+                { formula: "cos(-3π/2-α)", answer: "sin" },
+                { formula: "sin(-π+α)", answer: "-sin" },
+                { formula: "cos(-π+α)", answer: "-cos" },
+                { formula: "tan(-π+α)", answer: "tan" },
+                { formula: "sin(-π-α)", answer: "sin" },
+                { formula: "cos(-π-α)", answer: "-cos" },
+                { formula: "tan(-π-α)", answer: "-tan" },
+                { formula: "sin(-2π+α)", answer: "sin" },
+                { formula: "cos(-2π+α)", answer: "cos" },
+                { formula: "tan(-2π+α)", answer: "tan" },
+                { formula: "sin(-2π-α)", answer: "-sin" },
+                { formula: "cos(-2π-α)", answer: "cos" },
+                { formula: "tan(-2π-α)", answer: "-tan" }
             ],
             level3: [
                 { formula: "sin(5π/2+α)", answer: "cos" },
@@ -734,10 +806,11 @@
             
             gameState.score = 0;
             
+            // 设置不同等级的时间限制
             if (gameState.level === 3) {
-                gameState.timeLeft = 90;
+                gameState.timeLeft = 90; // 高级1分30秒
             } else {
-                gameState.timeLeft = 120;
+                gameState.timeLeft = 120; // 初级和中级2分钟
             }
             
             gameState.isGameActive = true;
@@ -746,9 +819,13 @@
             gameState.lastFormula = null;
             gameState.formulaStats = {};
             gameState.currentStartTime = null;
+            gameState.gameEndReason = null;
+            gameState.challengeSuccess = false;
             
+            // 清除之前的计时器
             if (gameState.timerInterval) {
                 clearInterval(gameState.timerInterval);
+                gameState.timerInterval = null;
             }
             
             loadRecords();
@@ -758,7 +835,8 @@
             startTimer();
             generateNextFormula();
             
-            var popups = document.querySelectorAll('.game-over, .success-message, .level-up, .record-form, .rank-popup, .share-popup');
+            // 隐藏所有弹窗
+            var popups = document.querySelectorAll('.game-over, .success-message, .level-up, .record-form, .rank-popup, .share-popup, .tip-popup');
             for (var i = 0; i < popups.length; i++) {
                 popups[i].classList.add('hidden');
             }
@@ -891,7 +969,8 @@
                 updateTimerDisplay();
                 
                 if (gameState.timeLeft <= 0) {
-                    endGame(false);
+                    // 时间到了，游戏结束
+                    endGame("时间到了！您未能在规定时间内达到15分。");
                 }
             }, 1000);
         }
@@ -1012,38 +1091,39 @@
             updateUI();
             
             if (gameState.score < 0) {
-                endGame(false);
+                endGame("您的分数低于 0 分，请再接再厉！");
                 return;
             }
             
-            if (gameState.score >= 15) {
-                if (gameState.level < 3) {
-                    var recordTime = checkRecord();
-                    if (recordTime !== null) {
-                        showRecordForm(recordTime);
-                    } else {
-                        showLevelUp();
-                    }
+            // 只有在游戏进行中且分数达到15分时才算挑战成功
+            if (gameState.score >= 15 && gameState.isGameActive) {
+                gameState.challengeSuccess = true;
+                gameState.isGameActive = false;
+                
+                // 清除计时器
+                if (gameState.timerInterval) {
+                    clearInterval(gameState.timerInterval);
+                    gameState.timerInterval = null;
+                }
+                
+                // 检查是否打破纪录
+                var recordTime = checkRecord();
+                if (recordTime !== null) {
+                    showRecordForm(recordTime);
                 } else {
-                    var recordTime = checkRecord();
-                    if (recordTime !== null) {
-                        showRecordForm(recordTime, true);
-                    } else {
-                        endGame(true);
-                    }
+                    // 显示温馨提示弹窗
+                    showTipPopup(true);
                 }
             }
         }
 
         // 显示记录表单
-        function showRecordForm(recordTime, isFinalLevel) {
-            gameState.isGameActive = false;
-            
+        function showRecordForm(recordTime) {
             var minutes = Math.floor(recordTime / 60);
             var seconds = recordTime % 60;
             document.getElementById('recordTimeValue').textContent = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
             
-            if (isFinalLevel) {
+            if (gameState.level === 3) {
                 document.getElementById('recordMessage').textContent = '恭喜您以 ' + minutes + ':' + (seconds < 10 ? '0' : '') + seconds + ' 的成绩通关并打破纪录！';
             } else {
                 document.getElementById('recordMessage').textContent = '您以 ' + minutes + ':' + (seconds < 10 ? '0' : '') + seconds + ' 的成绩打破了最快纪录！';
@@ -1078,17 +1158,41 @@
             saveRecords();
             document.getElementById('recordForm').classList.add('hidden');
             
-            if (gameState.level < 3) {
-                showLevelUp();
+            // 显示温馨提示弹窗
+            showTipPopup(true);
+        }
+
+        // 显示温馨提示弹窗
+        function showTipPopup(isSuccess) {
+            // 生成温馨提示内容
+            generateTipContent(isSuccess);
+            
+            // 显示温馨提示弹窗
+            document.getElementById('tipPopup').classList.remove('hidden');
+        }
+
+        // 温馨提示弹窗后继续
+        function continueAfterTip() {
+            document.getElementById('tipPopup').classList.add('hidden');
+            
+            if (gameState.challengeSuccess) {
+                // 挑战成功
+                if (gameState.level < 3) {
+                    // 显示升级弹窗
+                    showLevelUp();
+                } else {
+                    // 高级通关，显示成功弹窗
+                    document.getElementById('successPopup').classList.remove('hidden');
+                }
             } else {
-                endGame(true);
+                // 挑战失败，显示游戏结束弹窗
+                document.getElementById('gameOverPopup').classList.remove('hidden');
+                document.getElementById('gameOverMessage').textContent = gameState.gameEndReason || "很遗憾，您挑战失败，再接再厉哦！";
             }
         }
 
         // 显示升级界面
         function showLevelUp() {
-            gameState.isGameActive = false;
-            
             var nextLevel = gameState.level + 1;
             var levelText = "";
             switch(nextLevel) {
@@ -1096,7 +1200,8 @@
                 case 3: levelText = "高级"; break;
             }
             
-            document.getElementById('levelUpMessage').textContent = '成功晋级到' + levelText + '！';
+            document.getElementById('levelUpTitle').textContent = '升级成功！';
+            document.getElementById('levelUpMessage').textContent = '恭喜您成功升级到' + levelText + '！';
             document.getElementById('levelUpPopup').classList.remove('hidden');
         }
 
@@ -1105,34 +1210,99 @@
             gameState.level++;
             localStorage.setItem('inductionFormulaLevel', gameState.level.toString());
             
-            gameState.score = 0;
-            
-            if (gameState.level === 3) {
-                gameState.timeLeft = 90;
-            } else {
-                gameState.timeLeft = 120;
-            }
-            
-            gameState.isGameActive = true;
-            gameState.currentFormula = null;
-            
-            updateUI();
-            generateNextFormula();
-            document.getElementById('levelUpPopup').classList.add('hidden');
+            // 重新开始游戏
+            restartGame();
         }
 
         // 结束游戏
-        function endGame(isSuccess) {
+        function endGame(message) {
             gameState.isGameActive = false;
+            gameState.challengeSuccess = false;
+            gameState.gameEndReason = message;
             
             if (gameState.timerInterval) {
                 clearInterval(gameState.timerInterval);
+                gameState.timerInterval = null;
             }
             
-            if (isSuccess) {
-                document.getElementById('successPopup').classList.remove('hidden');
+            // 显示温馨提示弹窗
+            showTipPopup(false);
+        }
+
+        // 生成温馨提示内容
+        function generateTipContent(isSuccess) {
+            var tipContent = document.getElementById('tipContent');
+            tipContent.innerHTML = '';
+            
+            // 根据成功或失败显示不同的内容
+            if (!isSuccess) {
+                // 失败时显示错误公式
+                var wrongFormulas = [];
+                for (var formula in gameState.formulaStats) {
+                    if (gameState.formulaStats[formula].wrong > 0) {
+                        wrongFormulas.push({
+                            formula: formula,
+                            wrongCount: gameState.formulaStats[formula].wrong
+                        });
+                    }
+                }
+                
+                // 按错误次数降序排列
+                wrongFormulas.sort(function(a, b) {
+                    return b.wrongCount - a.wrongCount;
+                });
+                
+                if (wrongFormulas.length > 0) {
+                    var wrongSection = document.createElement('div');
+                    wrongSection.innerHTML = '<h3>错误较多的公式：</h3><ul>';
+                    
+                    wrongFormulas.forEach(function(item) {
+                        wrongSection.innerHTML += '<li>' + item.formula + ' (错误 ' + item.wrongCount + ' 次)</li>';
+                    });
+                    
+                    wrongSection.innerHTML += '</ul>';
+                    tipContent.appendChild(wrongSection);
+                } else {
+                    var noWrongSection = document.createElement('div');
+                    noWrongSection.innerHTML = '<h3>错误较多的公式：</h3><p>本次挑战没有错误的公式，表现很棒！</p>';
+                    tipContent.appendChild(noWrongSection);
+                }
+            }
+            
+            // 找出平均用时最长的公式（前3名）
+            var slowFormulas = [];
+            for (var formula in gameState.formulaStats) {
+                if (gameState.formulaStats[formula].count > 0) {
+                    var avgTime = gameState.formulaStats[formula].totalTime / gameState.formulaStats[formula].count;
+                    slowFormulas.push({
+                        formula: formula,
+                        avgTime: avgTime
+                    });
+                }
+            }
+            
+            // 按平均用时降序排列
+            slowFormulas.sort(function(a, b) {
+                return b.avgTime - a.avgTime;
+            });
+            
+            // 只取前3名
+            slowFormulas = slowFormulas.slice(0, 3);
+            
+            if (slowFormulas.length > 0) {
+                var slowSection = document.createElement('div');
+                slowSection.innerHTML = '<h3>用时较长的公式：</h3><ul>';
+                
+                slowFormulas.forEach(function(item) {
+                    slowSection.innerHTML += '<li>' + item.formula + ' (平均用时 ' + item.avgTime.toFixed(1) + ' 秒)</li>';
+                });
+                
+                slowSection.innerHTML += '</ul>';
+                tipContent.appendChild(slowSection);
             } else {
-                document.getElementById('gameOverPopup').classList.remove('hidden');
+                var noSlowSection = document.createElement('div');
+                noSlowSection.innerHTML = '<h3>用时较长的公式：</h3><p>本次挑战没有特别耗时的公式。</p>';
+                tipContent.appendChild(noSlowSection);
             }
         }
 
@@ -1163,8 +1333,10 @@
             if (gameState.rankList.length === 0) {
                 rankListElement.innerHTML = '<p style="text-align: center; padding: 20px;">暂无排行榜数据</p>';
             } else {
-                // 按用时从少到多排序
                 var sortedRankList = gameState.rankList.slice().sort(function(a, b) {
+                    if (b.score !== a.score) {
+                        return b.score - a.score;
+                    }
                     return a.timeUsed - b.timeUsed;
                 });
                 
@@ -1178,7 +1350,7 @@
                     
                     var playerInfo = document.createElement('div');
                     playerInfo.className = 'player-info';
-                    playerInfo.textContent = player.name + ' - ' + formatTime(player.timeUsed) + ' - ' + player.score + '分';
+                    playerInfo.textContent = player.name + ' - ' + player.score + '分 - ' + formatTime(player.timeUsed);
                     
                     rankItem.appendChild(rankNumber);
                     rankItem.appendChild(playerInfo);
@@ -1272,11 +1444,14 @@
             alert('游戏链接已复制到剪贴板！');
         }
 
-        // 重新开始游戏
-        function restartGame() {
+        // 重新开始游戏（同级重新开始）
+        function restartSameLevel() {
             document.getElementById('gameOverPopup').classList.add('hidden');
             document.getElementById('successPopup').classList.add('hidden');
+            document.getElementById('tipPopup').classList.add('hidden');
+            document.getElementById('levelUpPopup').classList.add('hidden');
             
+            // 保持当前等级，只重置分数和时间
             gameState.score = 0;
             
             if (gameState.level === 3) {
@@ -1291,9 +1466,12 @@
             gameState.lastFormula = null;
             gameState.formulaStats = {};
             gameState.currentStartTime = null;
+            gameState.gameEndReason = null;
+            gameState.challengeSuccess = false;
             
             if (gameState.timerInterval) {
                 clearInterval(gameState.timerInterval);
+                gameState.timerInterval = null;
             }
             
             updateUI();
@@ -1302,6 +1480,17 @@
             
             document.getElementById('resultFeedback').textContent = '';
             document.getElementById('correctAnswer').textContent = '';
+        }
+
+        // 重新开始游戏（初始化游戏）
+        function restartGame() {
+            document.getElementById('gameOverPopup').classList.add('hidden');
+            document.getElementById('successPopup').classList.add('hidden');
+            document.getElementById('tipPopup').classList.add('hidden');
+            document.getElementById('levelUpPopup').classList.add('hidden');
+            
+            // 调用初始化游戏
+            initGame();
         }
 
         // 初始化游戏
